@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS product_variants (
     brand_id INT REFERENCES brands(brand_id), -- NULL for burgers/scoops
     variant_name VARCHAR(100) NOT NULL,
     price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
-    tracks_stock BOOLEAN DEFAULT FALSE, -- TRUE only for sealed ice cream
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     UNIQUE (product_id, brand_id, variant_name)
@@ -228,6 +227,10 @@ ADD COLUMN display_order INT NOT NULL DEFAULT 0;
 
 ALTER TABLE product_variants
 ADD COLUMN display_order INT NOT NULL DEFAULT 0;
+
+ALTER TABLE product_variants
+ADD COLUMN stock_mode VARCHAR(20) NOT NULL DEFAULT 'NONE'
+CHECK (stock_mode IN ('NONE','SEALED','INGREDIENT'));
 
 -- =============================================================================
 -- COMPLETION
