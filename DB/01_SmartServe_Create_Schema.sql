@@ -228,9 +228,65 @@ ADD COLUMN display_order INT NOT NULL DEFAULT 0;
 ALTER TABLE product_variants
 ADD COLUMN display_order INT NOT NULL DEFAULT 0;
 
-ALTER TABLE product_variants
-ADD COLUMN stock_mode VARCHAR(20) NOT NULL DEFAULT 'NONE'
-CHECK (stock_mode IN ('NONE','SEALED','INGREDIENT'));
+DROP TABLE IF EXISTS stock;
+DROP TABLE IF EXISTS ingredient_stock;
+DROP TABLE IF EXISTS ingredient_transactions;
+DROP TABLE IF EXISTS stock_transactions;
+
+CREATE TABLE stock_items (
+    stock_item_id SERIAL PRIMARY KEY,
+
+    item_type VARCHAR(20) NOT NULL
+        CHECK (item_type IN ('SEALED','INGREDIENT')),
+
+    reference_id INT NOT NULL,
+        -- VARIANT  → product_variants.variant_id
+        -- INGREDIENT → ingredients.ingredient_id
+
+    unit VARCHAR(20) NOT NULL,
+        -- PCS, ML, GM
+
+    min_stock_level NUMERIC(10,2) DEFAULT 0,
+
+    is_active BOOLEAN DEFAULT TRUE,
+
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+
+    UNIQUE (item_type, reference_id)
+);
+
+CREATE TABLE stock_transactions (
+    stock_txn_id SERIAL PRIMARY KEY,
+
+    stock_item_id INT NOT NULL REFERENCES stock_items(stock_item_id),
+
+    transaction_type VARCHAR(10) NOT NULL
+        CHECK (transaction_type IN ('IN','OUT','ADJUST')),
+
+    quantity NUMERIC(10,2) NOT NULL CHECK (quantity > 0),
+
+    reason VARCHAR(30) NOT NULL,
+        -- PURCHASE, SALE, OPENED, WASTE, DAMAGE, MANUAL
+
+    reference_type VARCHAR(20),
+        -- ORDER, PURCHASE, MANUAL
+
+    reference_id INT,
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS ingredients (
+    ingredient_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    unit VARCHAR(20) NOT NULL DEFAULT 'PCS',
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+CREATE INDEX idx_stock_txn_item ON stock_transactions(stock_item_id);
+CREATE INDEX idx_stock_txn_created ON stock_transactions(created_at);
+CREATE INDEX idx_stock_items_type ON stock_items(item_type);
+
 
 -- =============================================================================
 -- COMPLETION
