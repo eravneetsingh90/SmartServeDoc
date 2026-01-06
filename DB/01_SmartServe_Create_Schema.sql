@@ -237,7 +237,7 @@ CREATE TABLE stock_items (
     stock_item_id SERIAL PRIMARY KEY,
 
     item_type VARCHAR(20) NOT NULL
-        CHECK (item_type IN ('SEALED','INGREDIENT')),
+        CHECK (item_type IN ('VARIANT','INGREDIENT')),
 
     reference_id INT NOT NULL,
         -- VARIANT  → product_variants.variant_id
