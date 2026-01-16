@@ -64,69 +64,70 @@ INSERT INTO brands (name) VALUES
 ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO products (name, category_id)
-SELECT 'Vanilla', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Vanilla', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Strawberry', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Strawberry', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Mix Fruit', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Mix Fruit', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Cherry Berry', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Cherry Berry', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Butter Scotch', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Butter Scotch', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Alphonso Mango', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Alphonso Mango', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Chocolate', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Chocolate', id FROM categories WHERE name='Ice Cream Scoops'
 ON CONFLICT DO NOTHING;
+
 INSERT INTO products (name, category_id)
-SELECT 'Black Currant', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Black Currant', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Swiss Cake', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Swiss Cake', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Bubble Gum', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Bubble Gum', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Chocolate Chips', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Chocolate Chips', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Cookie Cream', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Cookie Cream', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Kaju Draksh', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Kaju Draksh', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Pineapple', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Pineapple', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Coffee', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Coffee', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Almond Carnival', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Almond Carnival', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Blue Berry', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Blue Berry', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Malai Rabri', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Malai Rabri', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Kesar Pista', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Kesar Pista', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Rajbhog', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Rajbhog', id FROM categories WHERE name='Ice Cream Scoops'
 ON CONFLICT DO NOTHING;
+
 INSERT INTO products (name, category_id)
-SELECT 'American Nuts', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'American Nuts', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Chocolate Brownie', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Chocolate Brownie', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Fruit Blast', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Fruit Blast', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Lajwab Gulkand', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Lajwab Gulkand', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Fruit Cocktail', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Fruit Cocktail', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Paan', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Paan', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Chappan Bhog', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Chappan Bhog', id FROM categories WHERE name='Ice Cream Scoops'
 UNION ALL
-SELECT 'Fruit Punch', category_id FROM categories WHERE name='Ice Cream Scoops'
+SELECT 'Fruit Punch', id FROM categories WHERE name='Ice Cream Scoops'
 ON CONFLICT DO NOTHING;
 
 
-
-INSERT INTO product_variants (product_id, variant_name, price, tracks_stock)
-SELECT p.product_id, v.variant_name, v.price, FALSE
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.id, v.variant_name, v.price
 FROM products p
 JOIN (VALUES
     ('Single Scoop', 50),
@@ -145,9 +146,8 @@ WHERE p.name IN (
 )
 ON CONFLICT DO NOTHING;
 
-
-INSERT INTO product_variants (product_id, variant_name, price, tracks_stock)
-SELECT p.product_id, v.variant_name, v.price, FALSE
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.id, v.variant_name, v.price
 FROM products p
 JOIN (VALUES
     ('Single Scoop', 60),
@@ -173,8 +173,8 @@ WHERE p.name IN (
 ON CONFLICT DO NOTHING;
 
 
-INSERT INTO product_variants (product_id, variant_name, price, tracks_stock)
-SELECT p.product_id, v.variant_name, v.price, FALSE
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.id, v.variant_name, v.price
 FROM products p
 JOIN (VALUES
     ('Single Scoop', 70),
@@ -202,5 +202,282 @@ SET price = CASE variant_name
     WHEN 'Tub' THEN 200
 END
 WHERE product_id = (
-    SELECT product_id FROM products WHERE name = 'Vanilla'
+    SELECT id FROM products WHERE name = 'Vanilla'
 );
+
+
+INSERT INTO products (name, category_id)
+SELECT 'Scoop Cake', Id
+FROM categories
+WHERE name = 'Ice Cream Cake'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, v.variant_name, v.price
+FROM products p
+JOIN (VALUES
+    ('Oreo Ice Cream Cake', 150),
+    ('Chocolate Ice Cream Cake', 150),
+    ('Strawberry Ice Cream Cake', 150),
+    ('Mix Fruit Ice Cream Cake', 150)
+) v(variant_name, price)
+ON TRUE
+WHERE p.name = 'Scoop Cake'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO products (name, category_id)
+SELECT 'Waffle Sundae', Id
+FROM categories
+WHERE name = 'Waffle'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, v.variant_name, v.price
+FROM products p
+JOIN (VALUES
+    ('Milk Chocolate Waffle Sundae', 70),
+    ('Dark Chocolate Waffle Sundae', 80),
+    ('Oreo Waffle Sundae', 80),
+    ('Kit-Kat Waffle Sundae', 90),
+    ('Red Velvet Waffle Sundae', 90),
+    ('Nutella Waffle Sundae', 100),
+    ('Strawberry Waffle Sundae', 100),
+    ('Blueberry Waffle Sundae', 100),
+    ('Kit-Kat Nutella Mix Waffle Sundae', 120)
+) v(variant_name, price)
+ON TRUE
+WHERE p.name = 'Waffle Sundae'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO products (name, category_id)
+SELECT v.name, c.Id
+FROM categories c
+JOIN (VALUES
+    ('Oreo Tawa Ice Cream'),
+    ('5 Star Tawa Ice Cream'),
+    ('Kit-kat Tawa Ice Cream'),
+    ('Chocolate Tawa Ice Cream'),
+    ('Snickers Tawa Ice Cream'),
+    ('Paan Tawa Ice Cream'),
+    ('Mango Tawa Ice Cream'),
+    ('Rabri Tawa Ice Cream'),
+    ('Strawberry Tawa Ice Cream'),
+    ('Nutella Tawa Ice Cream'),
+    ('Mix Fruit Tawa Ice Cream')
+) v(name) ON TRUE
+WHERE c.name = 'Tawa Ice Cream'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, 'Regular', v.price
+FROM products p
+JOIN (VALUES
+    ('Oreo Tawa Ice Cream', 100),
+    ('5 Star Tawa Ice Cream', 100),
+    ('Kit-kat Tawa Ice Cream', 120),
+    ('Chocolate Tawa Ice Cream', 120),
+    ('Snickers Tawa Ice Cream', 120),
+    ('Paan Tawa Ice Cream', 120),
+    ('Mango Tawa Ice Cream', 120),
+    ('Rabri Tawa Ice Cream', 120),
+    ('Strawberry Tawa Ice Cream', 120),
+    ('Nutella Tawa Ice Cream', 140),
+    ('Mix Fruit Tawa Ice Cream', 140)
+) v(product_name, price)
+    ON p.name = v.product_name
+ON CONFLICT DO NOTHING;
+
+INSERT INTO products (name, category_id)
+SELECT v.name, c.Id
+FROM categories c
+JOIN (VALUES
+    ('Hot Brownie Fudge'),
+    ('Oreo Overloaded'),
+    ('Sprinkleberry'),
+    ('Delicious Dirt'),
+    ('Mud Pie Mojo'),
+    ('Strawberry Sundae'),
+    ('Brownie Cake Remix'),
+    ('Coffee Lovers Only'),
+    ('Chocolate Devotion'),
+    ('Cookie Overloaded'),
+    ('Nutella Mix Sundae'),
+    ('Berry Berry Good'),
+    ('Fruit Punch Sundae')
+) v(name) ON TRUE
+WHERE c.name = 'Sundae Ice Cream'
+ON CONFLICT DO NOTHING;
+
+
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, v.variant_name, v.price
+FROM products p
+JOIN (VALUES
+    ('Hot Brownie Fudge', 'Small', 79),
+    ('Hot Brownie Fudge', 'Large', 140),
+
+    ('Oreo Overloaded', 'Small', 100),
+    ('Oreo Overloaded', 'Large', 140),
+
+    ('Sprinkleberry', 'Small', 100),
+    ('Sprinkleberry', 'Large', 140),
+
+    ('Delicious Dirt', 'Small', 100),
+    ('Delicious Dirt', 'Large', 140),
+
+    ('Mud Pie Mojo', 'Small', 120),
+    ('Mud Pie Mojo', 'Large', 150),
+
+    ('Strawberry Sundae', 'Small', 120),
+    ('Strawberry Sundae', 'Large', 150),
+
+    ('Brownie Cake Remix', 'Small', 120),
+    ('Brownie Cake Remix', 'Large', 150),
+
+    ('Coffee Lovers Only', 'Small', 120),
+    ('Coffee Lovers Only', 'Large', 150),
+
+    ('Chocolate Devotion', 'Small', 120),
+    ('Chocolate Devotion', 'Large', 150),
+
+    ('Cookie Overloaded', 'Small', 120),
+    ('Cookie Overloaded', 'Large', 150),
+
+    ('Nutella Mix Sundae', 'Small', 120),
+    ('Nutella Mix Sundae', 'Large', 150),
+
+    ('Berry Berry Good', 'Small', 120),
+    ('Berry Berry Good', 'Large', 150),
+
+    ('Fruit Punch Sundae', 'Small', 120),
+    ('Fruit Punch Sundae', 'Large', 160)
+) v(product_name, variant_name, price)
+    ON p.name = v.product_name
+ON CONFLICT DO NOTHING;
+
+INSERT INTO products (name, category_id)
+SELECT v.name, c.Id
+FROM categories c
+JOIN (VALUES
+    ('Milk Chocolate Waffle'),
+    ('Dark Chocolate Waffle'),
+    ('White Chocolate Waffle'),
+    ('Triple Chocolate Waffle'),
+    ('Oreo Waffle'),
+    ('Kit-Kat Waffle'),
+    ('Nutella Waffle'),
+    ('Kit-Kat Nutella Mix Waffle'),
+    ('Strawberry Waffle'),
+    ('Blueberry Waffle'),
+    ('Red Velvet Waffle')
+) v(name) ON TRUE
+WHERE c.name = 'Waffle'
+ON CONFLICT DO NOTHING;
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, 'Belgian Waffle', v.price
+FROM products p
+JOIN (VALUES
+    ('Milk Chocolate Waffle', 120),
+    ('Dark Chocolate Waffle', 120),
+    ('White Chocolate Waffle', 120),
+    ('Triple Chocolate Waffle', 140),
+    ('Oreo Waffle', 140),
+    ('Kit-Kat Waffle', 140),
+    ('Nutella Waffle', 150),
+    ('Kit-Kat Nutella Mix Waffle', 160),
+    ('Strawberry Waffle', 140),
+    ('Blueberry Waffle', 140),
+    ('Red Velvet Waffle', 140)
+) v(product_name, price)
+    ON p.name = v.product_name
+ON CONFLICT DO NOTHING;
+
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, 'Waffle Sundae', v.price
+FROM products p
+JOIN (VALUES
+    ('Milk Chocolate Waffle', 70),
+    ('Dark Chocolate Waffle', 80),
+    ('Oreo Waffle', 80),
+    ('Kit-Kat Waffle', 90),
+    ('Red Velvet Waffle', 90),
+    ('Nutella Waffle', 100),
+    ('Strawberry Waffle', 100),
+    ('Blueberry Waffle', 100),
+    ('Kit-Kat Nutella Mix Waffle', 120)
+) v(product_name, price)
+    ON p.name = v.product_name
+ON CONFLICT DO NOTHING;
+
+INSERT INTO products (name, category_id)
+SELECT v.name, c.Id
+FROM categories c
+JOIN (VALUES
+    ('Aloo Tikki Burger'),
+    ('Hot N Spicy Veg Burger'),
+    ('Veg Tandoori Burger'),
+    ('Veg Makhani Burst Burger'),
+    ('Cheese Burst Veg Burger')
+) v(name) ON TRUE
+WHERE c.name = 'Burger'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, v.variant_name, v.price
+FROM products p
+JOIN (VALUES
+    ('Aloo Tikki Burger', 'Burger', 50),
+    ('Aloo Tikki Burger', 'Meal', 100),
+
+    ('Hot N Spicy Veg Burger', 'Burger', 70),
+    ('Hot N Spicy Veg Burger', 'Meal', 150),
+
+    ('Veg Tandoori Burger', 'Burger', 80),
+    ('Veg Tandoori Burger', 'Meal', 160),
+
+    ('Veg Makhani Burst Burger', 'Burger', 90),
+    ('Veg Makhani Burst Burger', 'Meal', 170),
+
+    ('Cheese Burst Veg Burger', 'Burger', 100),
+    ('Cheese Burst Veg Burger', 'Meal', 180)
+) v(product_name, variant_name, price)
+    ON p.name = v.product_name
+ON CONFLICT DO NOTHING;
+
+
+INSERT INTO products (name, category_id, food_type)
+SELECT v.name, c.Id, 'NON_VEG'
+FROM categories c
+JOIN (VALUES
+    ('Crispy Chicken Burger'),
+    ('Hot N Spicy Chicken Burger'),
+    ('Chicken Tandoori Burger'),
+    ('Chicken Makhani Burst Burger'),
+    ('Cheese Burst Chicken Burger')
+) v(name) ON TRUE
+WHERE c.name = 'Burger'
+ON CONFLICT DO NOTHING;
+
+INSERT INTO product_variants (product_id, variant_name, price)
+SELECT p.Id, v.variant_name, v.price
+FROM products p
+JOIN (VALUES
+    ('Crispy Chicken Burger', 'Burger', 70),
+    ('Crispy Chicken Burger', 'Meal', 150),
+
+    ('Hot N Spicy Chicken Burger', 'Burger', 90),
+    ('Hot N Spicy Chicken Burger', 'Meal', 170),
+
+    ('Chicken Tandoori Burger', 'Burger', 100),
+    ('Chicken Tandoori Burger', 'Meal', 180),
+
+    ('Chicken Makhani Burst Burger', 'Burger', 110),
+    ('Chicken Makhani Burst Burger', 'Meal', 190),
+
+    ('Cheese Burst Chicken Burger', 'Burger', 120),
+    ('Cheese Burst Chicken Burger', 'Meal', 200)
+) v(product_name, variant_name, price)
+    ON p.name = v.product_name
+ON CONFLICT DO NOTHING;
+
+
