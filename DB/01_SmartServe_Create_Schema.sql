@@ -105,13 +105,6 @@ CREATE TABLE IF NOT EXISTS ingredients (
     is_active BOOLEAN DEFAULT TRUE
 );
 
--- =============================================================================
--- INGREDIENT STOCK
--- =============================================================================
-CREATE TABLE IF NOT EXISTS ingredient_stock (
-    ingredient_id INT PRIMARY KEY REFERENCES ingredients(ingredient_id),
-    quantity NUMERIC(10,2) DEFAULT 0 CHECK (quantity >= 0)
-);
 
 -- =============================================================================
 -- BURGER RECIPES (VARIANT → INGREDIENT)
@@ -121,20 +114,6 @@ CREATE TABLE IF NOT EXISTS product_ingredients (
     ingredient_id INT REFERENCES ingredients(ingredient_id),
     qty_required NUMERIC(10,2) NOT NULL CHECK (qty_required > 0),
     PRIMARY KEY (variant_id, ingredient_id)
-);
-
--- =============================================================================
--- INGREDIENT TRANSACTIONS (BURGER AUDIT)
--- =============================================================================
-CREATE TABLE IF NOT EXISTS ingredient_transactions (
-    ingredient_txn_id SERIAL PRIMARY KEY,
-    ingredient_id INT REFERENCES ingredients(ingredient_id),
-    change_qty NUMERIC(10,2) NOT NULL,
-    reason VARCHAR(20) NOT NULL CHECK (
-        reason IN ('PURCHASE','SALE','WASTE','ADJUSTMENT')
-    ),
-    reference_id INT,
-    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- =============================================================================
@@ -212,7 +191,6 @@ CREATE INDEX IF NOT EXISTS idx_variants_product ON product_variants(product_id);
 CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
 CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_stock_variant ON stock(variant_id);
-CREATE INDEX IF NOT EXISTS idx_ingredient_txn ON ingredient_transactions(ingredient_id);
 
 
 -- =============================================================================
@@ -233,15 +211,15 @@ DROP TABLE IF EXISTS ingredient_stock;
 DROP TABLE IF EXISTS ingredient_transactions;
 DROP TABLE IF EXISTS stock_transactions;
 
-CREATE TABLE stock_items (
-    stock_item_id SERIAL PRIMARY KEY,
+CREATE TABLE stock (
+    id SERIAL PRIMARY KEY,
 
     item_type VARCHAR(20) NOT NULL
         CHECK (item_type IN ('VARIANT','INGREDIENT')),
 
-    reference_id INT NOT NULL,
-        -- VARIANT  → product_variants.variant_id
-        -- INGREDIENT → ingredients.ingredient_id
+    variant_id INT NOT NULL
+        REFERENCES product_variants(variant_id)
+        ON DELETE CASCADE,
 
     unit VARCHAR(20) NOT NULL,
         -- PCS, ML, GM
@@ -252,13 +230,13 @@ CREATE TABLE stock_items (
 
     created_at TIMESTAMPTZ DEFAULT NOW(),
 
-    UNIQUE (item_type, reference_id)
+    UNIQUE (item_type, variant_id)
 );
 
 CREATE TABLE stock_transactions (
-    stock_txn_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
 
-    stock_item_id INT NOT NULL REFERENCES stock_items(stock_item_id),
+    stock_id INT NOT NULL REFERENCES stock(id) ON DELETE CASCADE,
 
     transaction_type VARCHAR(10) NOT NULL
         CHECK (transaction_type IN ('IN','OUT','ADJUST')),
@@ -270,9 +248,7 @@ CREATE TABLE stock_transactions (
 
     reference_type VARCHAR(20),
         -- ORDER, PURCHASE, MANUAL
-
     reference_id INT,
-
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -283,10 +259,9 @@ CREATE TABLE IF NOT EXISTS ingredients (
     is_active BOOLEAN DEFAULT TRUE
 );
 
-CREATE INDEX idx_stock_txn_item ON stock_transactions(stock_item_id);
-CREATE INDEX idx_stock_txn_created ON stock_transactions(created_at);
-CREATE INDEX idx_stock_items_type ON stock_items(item_type);
-
+CREATE INDEX idx_stock_variant ON stock(variant_id);
+CREATE INDEX idx_stock_tx_stock ON stock_transactions(stock_id);
+CREATE INDEX idx_stock_tx_created ON stock_transactions(created_at);
 
 -- =============================================================================
 -- COMPLETION
