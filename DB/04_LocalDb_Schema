@@ -1,0 +1,95 @@
+PRAGMA foreign_keys = ON;
+
+-- =========================
+-- Schema Version Table
+-- =========================
+CREATE TABLE IF NOT EXISTS SchemaVersion (
+    Version INTEGER NOT NULL
+);
+
+INSERT INTO SchemaVersion (Version)
+SELECT 1
+WHERE NOT EXISTS (SELECT 1 FROM SchemaVersion);
+
+-- =========================
+-- Category
+-- =========================
+CREATE TABLE IF NOT EXISTS Category (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL,
+    IsActive INTEGER DEFAULT 1
+);
+
+-- =========================
+-- Products
+-- =========================
+CREATE TABLE IF NOT EXISTS Products (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    CategoryId INTEGER NOT NULL,
+    Name TEXT NOT NULL,
+    Description TEXT,
+    IsActive INTEGER DEFAULT 1,
+    FOREIGN KEY (CategoryId) REFERENCES Category(Id)
+);
+
+-- =========================
+-- Product Variant
+-- =========================
+CREATE TABLE IF NOT EXISTS Product_Variant (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ProductId INTEGER NOT NULL,
+    Name TEXT NOT NULL,
+    Price REAL NOT NULL,
+    TaxPercent REAL DEFAULT 0,
+    SKU TEXT,
+    IsActive INTEGER DEFAULT 1,
+    FOREIGN KEY (ProductId) REFERENCES Products(Id)
+);
+
+-- =========================
+-- Orders
+-- =========================
+CREATE TABLE IF NOT EXISTS Orders (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    OrderNo TEXT NOT NULL UNIQUE,
+    OrderDate TEXT NOT NULL,
+    SubTotal REAL NOT NULL,
+    TaxAmount REAL NOT NULL,
+    Discount REAL DEFAULT 0,
+    GrandTotal REAL NOT NULL,
+    PaymentStatus TEXT NOT NULL,
+    IsSynced INTEGER DEFAULT 0,
+    SyncedOn TEXT NULL,
+    SyncError TEXT NULL
+);
+
+-- =========================
+-- Order Items
+-- =========================
+CREATE TABLE IF NOT EXISTS Order_Items (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    OrderId INTEGER NOT NULL,
+    ProductId INTEGER NOT NULL,
+    VariantId INTEGER NOT NULL,
+    ProductName TEXT NOT NULL,
+    VariantName TEXT NOT NULL,
+    Quantity INTEGER NOT NULL,
+    UnitPrice REAL NOT NULL,
+    TaxPercent REAL NOT NULL,
+    TaxAmount REAL NOT NULL,
+    LineTotal REAL NOT NULL,
+    FOREIGN KEY (OrderId) REFERENCES Orders(Id)
+);
+
+-- =========================
+-- Payments
+-- =========================
+CREATE TABLE IF NOT EXISTS Payments (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    OrderId INTEGER NOT NULL,
+    PaymentMode TEXT NOT NULL,
+    Amount REAL NOT NULL,
+    PaymentDate TEXT NOT NULL,
+    IsSynced INTEGER DEFAULT 0,
+    FOREIGN KEY (OrderId) REFERENCES Orders(Id)
+);

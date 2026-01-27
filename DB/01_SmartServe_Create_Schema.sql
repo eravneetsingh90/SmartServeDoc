@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
     table_id INT REFERENCES restaurant_tables(Id),
     status_id INT REFERENCES table_status(Id),
-
+    original_amount NUMERIC(10,2) DEFAULT 0 CHECK (original_amount >= 0),
     total_amount NUMERIC(10,2) DEFAULT 0 CHECK (total_amount >= 0),
 
     discount_type VARCHAR(10) CHECK (
