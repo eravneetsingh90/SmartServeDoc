@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS orders (
     ),
     discount_value NUMERIC(10,2) DEFAULT 0 CHECK (discount_value >= 0),
     discount_reason VARCHAR(100),
-
+    is_tracked BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     closed_at TIMESTAMPTZ
 );
