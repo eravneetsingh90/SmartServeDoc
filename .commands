@@ -1,8 +1,8 @@
 dotnet ef dbcontext scaffold "Host=aws-1-ap-south-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.wuadxvnovhplslorqwng;Password=Golumolu@1990" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context-dir Data --context ApplicationDbContext --schema public --entity-suffix Entity --no-onconfiguring --force
 
-
-
-
-
-
 dotnet ef dbcontext scaffold "Host=aws-1-ap-south-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.wuadxvnovhplslorqwng;Password=Golumolu@1990" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context-dir Data --context ApplicationDbContext --schema public --no-onconfiguring --force
+
+New 
+dotnet ef dbcontext scaffold "Host=aws-1-ap-northeast-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.yzaagnfksfiiinnycctj;Password=Golumolu@1990" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context-dir Data --context ApplicationDbContext --schema public --entity-suffix Entity --no-onconfiguring --force
+
+dotnet ef dbcontext scaffold "Host=aws-1-ap-northeast-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.yzaagnfksfiiinnycctj;Password=Golumolu@1990" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context-dir Data --context ApplicationDbContext --schema public --no-onconfiguring --force

@@ -16,12 +16,58 @@ BEGIN
     RAISE NOTICE '============================================================';
 END $$;
 
+INSERT INTO tenants 
+(
+    name,
+    subdomain,
+    order_counter,
+    is_active
+)
+VALUES
+(
+    'Scoop Ice Cream Cafe',
+    'scoopjandpur',
+    1,
+    TRUE
+);
 
 --admin 1234, user 1111
-INSERT INTO users (name, role_id, is_active, pin_hash)
-VALUES
-('admin', 1, true,'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ='),
-('user', 2, true, 'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=');
+INSERT INTO users
+(
+    tenant_id,
+    name,
+    role_id,
+    pin_hash,
+    is_active
+)
+SELECT
+    t.id,
+    'admin',
+    r.id,
+    'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=',
+    TRUE
+FROM tenants t
+JOIN roles r ON LOWER(r.role_name) = 'owner'
+WHERE t.subdomain = 'scoopjandpur';
+
+INSERT INTO users
+(
+    tenant_id,
+    name,
+    role_id,
+    pin_hash,
+    is_active
+)
+SELECT
+    t.id,
+    'user',
+    r.id,
+    'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=',
+    TRUE
+FROM tenants t
+JOIN roles r ON LOWER(r.role_name) = 'kitchen'
+WHERE t.subdomain = 'scoopjandpur';
+
 
 
 INSERT INTO table_status (status_code, status_name, color_hex)
