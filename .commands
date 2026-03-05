@@ -6,3 +6,24 @@ dotnet ef dbcontext scaffold "Host=aws-1-ap-south-1.pooler.supabase.com;Port=543
 
 
 dotnet ef dbcontext scaffold "Host=aws-1-ap-south-1.pooler.supabase.com;Port=5432;Database=postgres;Username=postgres.wuadxvnovhplslorqwng;Password=Golumolu@1990" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models --context-dir Data --context ApplicationDbContext --schema public --no-onconfiguring --force
+
+
+Docker Command
+
+Stop 
+docker stop smartserve-container
+docker rm smartserve-container
+
+ReRun
+docker compose down
+docker compose up --build
+
+Run 
+docker run -d -p 8080:8080 -e ASPNETCORE_URLS=http://+:8080 --name smartserve-container smartserve-api
+docker run -d -p 8080:8080 -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_URLS=http://+:8080 --name smartserve-container smartserve-api
+
+
+ReDeploy
+docker rm -f smartserve-container
+docker build --no-cache -t smartserve-api .
+docker run -d -p 8080:8080 -e ASPNETCORE_URLS=http://+:8080 --name smartserve-container smartserve-api
