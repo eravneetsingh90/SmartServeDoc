@@ -27,4 +27,7 @@ INSERT INTO users
 VALUES
 -- Scoop Ice Cream Cafe (Tenant 1)
 (1, 'Scoop Admin', 'admin', 'scoopicecreamcafe@gmail.com', 2, 'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', NOW(), TRUE),
-(1, 'Scoop Cashier', 'user', null, 4, null,'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', NOW(), TRUE);
+(1, 'Scoop Cashier', 'user', null, 4, 'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', NOW(), TRUE);
+
+
+
